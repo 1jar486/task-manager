@@ -1,0 +1,762 @@
+/* =======================
+   THEME VARIABLES
+======================= */
+:root {
+    --bg-primary: #F9FAFB;
+    --bg-secondary: #F3F4F6;
+    --card-bg: #FFFFFF;
+
+    --text-primary: #111827;
+    --text-secondary: #6B7280;
+
+    --border-color: #E5E7EB;
+
+    --accent: #34D399;
+    --accent-hover: #10B981;
+
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+/* 🌙 DARK MODE */
+[data-theme="dark"] {
+    --bg-primary: #111827;
+    --bg-secondary: #1F2937;
+    --card-bg: #1F2937;
+
+    --text-primary: #F9FAFB;
+    --text-secondary: #9CA3AF;
+
+    --border-color: #374151;
+
+    --accent: #34D399;
+    --accent-hover: #10B981;
+
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.5);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.6);
+}
+
+/* ========================
+   1. 设计系统（Design Tokens）
+   ======================== */
+:root {
+    --primary: #34D399;
+    --primary-hover: #10B981;
+
+    --bg-main: #F9FAFB;
+    --bg-secondary: #F3F4F6;
+
+    --text-main: #111827;
+    --text-secondary: #6B7280;
+
+    --border: #E5E7EB;
+
+    --radius: 12px;
+    --radius-lg: 16px;
+
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 10px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+
+    --transition: all 0.25s ease;
+}
+
+/* ========================
+   2. 全局
+   ======================== */
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* ========================
+   3. 容器
+   ======================== */
+.app-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 24px;
+}
+
+/* ========================
+   4. Header
+   ======================== */
+.app-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+#current-date {
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* ========================
+   5. 输入区
+   ======================== */
+.card {
+    display: flex;
+    gap: 12px;
+    background: white;
+    padding: 16px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+/* 输入框 */
+input {
+    flex: 1;
+    padding: 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+    transition: var(--transition);
+    font-size: 16px;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+}
+
+/* 下拉框 */
+select {
+    padding: 10px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+}
+
+/* 按钮 */
+#addBtn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0 20px;
+    border-radius: var(--radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+#addBtn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+/* ========================
+   6. 状态栏
+   ======================== */
+.stats-bar {
+    display: flex;
+    justify-content: space-between;
+    margin: 16px 0 8px;
+    color: var(--text-secondary);
+}
+
+/* ========================
+   7. 看板布局
+   ======================== */
+.task-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+/* 每列 */
+.board-column {
+    background: transparent;
+}
+
+/* 列标题 sticky */
+.column-title {
+    position: sticky;
+    top: 0;
+    background: var(--bg-main);
+    padding: 10px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+    z-index: 10;
+}
+
+/* ========================
+   8. 卡片设计（核心）
+   ======================== */
+.task-card {
+    background: var(--card-bg);
+    box-shadow: var(--shadow-md);
+    border-radius: 16px;
+    transition: all 0.25s ease-in-out;
+}
+
+.task-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+/* hover 呼吸感 */
+.task-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+/* 优先级边条 */
+.border-高 { border-left-color: #EF4444; }
+.border-中 { border-left-color: #F59E0B; }
+.border-低 { border-left-color: #10B981; }
+
+/* 完成态 */
+.task-card.completed {
+    opacity: 0.5;
+    filter: grayscale(0.6);
+}
+
+/* ========================
+   9. 卡片内部
+   ======================== */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* 标题 */
+.task-title {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* 底部 */
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/* ID */
+.task-id {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+/* ========================
+   10. Badge（圆角 pill）
+   ======================== */
+.badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.badge-priority-高 {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+.badge-priority-中 {
+    background: #FEF3C7;
+    color: #92400E;
+}
+.badge-priority-低 {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
+.badge-tag {
+    background: #E0E7FF;
+    color: #3730A3;
+}
+
+/* ========================
+   11. checkbox
+   ======================== */
+.custom-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+}
+
+/* ========================
+   12. 删除按钮
+   ======================== */
+.icon-delete-btn {
+    border: none;
+    background: transparent;
+    color: #EF4444;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 4px 8px;
+    transition: var(--transition);
+}
+
+.icon-delete-btn:hover {
+    background: #FEE2E2;
+}
+
+/* ========================
+   13. 动效
+   ======================== */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ========================
+   14. 响应式
+   ======================== */
+@media (max-width: 768px) {
+    .task-board {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ======================
+   UI 升级覆盖层（直接加）
+====================== */
+
+/* 输入框 */
+input, select {
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 10px 14px;
+    transition: all 0.2s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.2);
+    transform: scale(1.02);
+}
+
+/* 按钮 */
+button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+/* 删除按钮（你卡片里的） */
+.icon-delete-btn {
+    background: transparent;
+    color: var(--text-secondary);
+}
+
+.icon-delete-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+}
+
+/* checkbox（重点） */
+input[type="checkbox"] {
+    accent-color: var(--accent);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* 卡片优化 */
+.task-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    transition: all 0.25s ease-in-out;
+}
+
+.task-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+/* 完成状态 */
+.task-card.completed {
+    opacity: 0.5;
+    filter: grayscale(0.6);
+}
+
+/* 文本层级 */
+.task-title {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.task-id {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+/* ======================
+   三栏看板布局（最终正确版）
+====================== */
+.task-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 24px;
+}
+
+/* 每一列（学习 / 生活 / 兼职） */
+.board-column {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+    padding: 16px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+/* Dark Mode */
+[data-theme="dark"] .board-column {
+    background: rgba(30, 41, 59, 0.6);
+}
+
+.column-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.board-column:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.task-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+
+    /* ======================
+       你新增的高级 UI（直接贴这里）
+    ====================== */
+
+#taskInput {
+    flex: 1;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid #E5E7EB;
+    transition: all 0.2s ease;
+}
+
+/* focus 动效 */
+#taskInput:focus {
+    border-color: #34D399;
+    box-shadow: 0 0 0 3px rgba(52,211,153,0.2);
+    transform: scale(1.02);
+}
+
+/* Dark */
+[data-theme="dark"] #taskInput {
+    background: #0F172A;
+    border-color: #334155;
+    color: #E5E7EB;
+}
+
+#addBtn {
+    background: linear-gradient(135deg, #34D399, #10B981);
+    border: none;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+#addBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(16,185,129,0.4);
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 日期 */
+#current-date {
+    color: #9CA3AF;
+    font-size: 14px;
+}
+
+/* 标题 */
+[data-theme="dark"] h1 {
+    color: #F9FAFB;
+}
+
+
+/* ======================
+   🚀 强制升级三栏布局（核心修复）
+====================== */
+.task-board {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 24px;
+}
+
+/* 每一列 */
+.board-column {
+    background: rgba(255,255,255,0.7) !important;
+    border-radius: 16px;
+    padding: 16px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+}
+
+.task-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 12px;
+
+    box-shadow:
+            0 1px 2px rgba(0,0,0,0.04),
+            0 4px 12px rgba(0,0,0,0.06);
+
+    transition: all 0.25s ease;
+}
+
+/* hover 动效 */
+.task-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow:
+            0 8px 20px rgba(0,0,0,0.12),
+            0 2px 6px rgba(0,0,0,0.08);
+}
+
+[data-theme="dark"] .board-column {
+    background: rgba(30,41,59,0.6) !important;
+}
+
+[data-theme="dark"] .task-card {
+    background: #1E293B;
+    color: #E5E7EB;
+}
+
+
+/* 🌙 优化的暗色模式变量 - M3 Tonal Edition */
+[data-theme="dark"] {
+    --bg-primary: #0F172A;      /* 深海军蓝底色，比纯黑更有质感 */
+    --bg-secondary: #1E293B;    /* 稍微亮一点的深色，用于输入框背景 */
+    --card-bg: #1E293B;         /* 卡片背景 */
+    --surface-tonal: #334155;   /* 用于看板列的背景，体现层级 */
+
+    --text-primary: #F1F5F9;    /* 柔和的白色，不刺眼 */
+    --text-secondary: #94A3B8;  /* 辅助文字颜色 */
+
+    --border-color: #334155;    /* 边框颜色，保持低调 */
+
+    /* 呼吸绿在暗色下要稍微调亮一点，增加通透感 */
+    --accent: #4ADE80;
+    --accent-hover: #22C55E;
+
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+}
+/* ===== 你原来的代码 ===== */
+
+/* ...很多代码... */
+
+
+/* ======================
+   🚀 UI 升级（放在最底部）
+====================== */
+
+.board-column {
+    background: rgba(255,255,255,0.65);
+    border-radius: 16px;
+    padding: 16px;
+
+    backdrop-filter: blur(14px);
+
+    box-shadow:
+            inset 0 1px 0 rgba(255,255,255,0.6),
+            0 10px 30px rgba(0,0,0,0.06);
+}
+
+.task-card {
+    margin-bottom: 16px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ======================
+   🚀 居中优化：下拉框
+====================== */
+/* 让 select 的文本和 emoji 整体居中 */
+select {
+    text-align: center;
+}
+
+/* 移除 select 默认箭头，使居中效果更好 (可选，建议) */
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: 28px; /* 给右侧腾出点空间 */
+}
+
+/* ======================
+   🚀 居中优化：看板列标题
+===================== */
+/* 让图标和文字整体在栏中居中，并保持对齐 */
+.column-title {
+    display: flex; /* 启用 Flex 布局 */
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    gap: 8px; /* 图标和字之间的间距 */
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+/* 调整图标本身的大小和垂直偏移，使其和文字更好对齐 */
+.column-title .material-icons {
+    font-size: 22px; /* 设置图标大小 */
+    color: var(--text-secondary); /* 可选：调整图标颜色 */
+    vertical-align: middle;
+}
+
+/* ======================
+   🚀 居中优化：卡片 badge
+===================== */
+/* 让 badge 内部的图标和文字居中 */
+.badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 3px 8px; /* 调整内边距使外观更精致 */
+}
+
+/* 调整 badge 内部图标的大小 */
+.badge .material-icons {
+    font-size: 14px;
+}
+
+/* 让两个 badge 在一个组里居中，并保持垂直对齐 */
+.badge-group {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 两个 badge 之间的距离 */
+}
+
+/* ======================
+   🚀 下拉框 UI 终极进化
+====================== */
+select {
+    appearance: none; /* 移除浏览器原生丑陋的箭头 */
+    -webkit-appearance: none;
+
+    background-color: var(--card-bg) !important;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    padding: 10px 32px 10px 16px !important; /* 给右侧预留箭头空间 */
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    /* 添加一个自定义的小箭头，代替原生的 */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
+/* 鼠标悬停时的呼吸感 */
+select:hover {
+    border-color: var(--accent) !important;
+    background-color: var(--bg-primary) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* 选中后的光晕（Focus） */
+select:focus {
+    outline: none;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.2) !important;
+}
+
+/* 适配暗色模式 */
+[data-theme="dark"] select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239CA3AF'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+}
+
+
+/* ======================
+   🌑 暗色模式细节深度修复
+====================== */
+
+/* 1. 修复看板列背景：在暗色模式下使用深色透明度，更有玻璃感 */
+[data-theme="dark"] .board-column {
+    background: rgba(30, 41, 59, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px); /* 增加磨砂玻璃效果 */
+}
+
+/* 2. 修复看板列标题：确保文字颜色正确 */
+[data-theme="dark"] .column-title {
+    color: var(--text-primary);
+    border-bottom-color: var(--surface-tonal);
+    background: transparent; /* 移除可能的白色背景 */
+}
+
+/* 3. 修复输入框：让它在暗色下“凹”进去 */
+[data-theme="dark"] .input-section.card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] select {
+    background: #0F172A !important; /* 比外框更深的颜色 */
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+/* 4. 修复卡片：让卡片在暗色下“浮”起来 */
+[data-theme="dark"] .task-card {
+    background: #1E293B;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: var(--shadow-md);
+}
+
+[data-theme="dark"] .task-card:hover {
+    background: #243147; /* 悬停时稍微变亮 */
+    border-color: var(--accent);
+}
+
+/* 5. 修复 Checkbox */
+[data-theme="dark"] .custom-checkbox {
+    border: 2px solid var(--text-secondary);
+    background: transparent;
+}
