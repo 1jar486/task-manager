@@ -1,6 +1,11 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-// 2. 核心修复：添加 assets/ 路径，确保能找到你那个 600 多行的样式文件
-import './assets/style.css'
+import router from './router' // 【关键】引入你定义的路由配置文件
+import './assets/style.css'   // 引入你的全局样式
 
-createApp(App).mount('#app')
+const app = createApp(App)
+
+// 【关键】必须使用 app.use(router) 插件，路由跳转才会生效
+app.use(router)
+
+app.mount('#app')

@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface TaskService {
     void addTask(Task task);
-    List<Task> getAllTasks();
-    void completeTask(int id);
-    void deleteTask(int id);
+    List<Task> getTasksByUserId(Long userId);
+    void completeTask(int id, Long userIdFromToken);
+    void deleteTask(int id, Long userIdFromToken);
 
 }

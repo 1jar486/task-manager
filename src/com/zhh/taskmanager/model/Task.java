@@ -1,15 +1,10 @@
 package com.zhh.taskmanager.model;
 
-import jakarta.persistence.*; // 如果报错，按 Alt+Enter 导入
 
-@Entity // 告诉数据库：这是一个表
-@Table(name = "tasks")
+
 public class Task {
-
-    @Id // 主键
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // ID 自动增长
     private Integer id; // 任务ID
-
+    private Long userId;
     private String title; // 任务标题
     private boolean completed; // 任务完成状态
 
@@ -19,7 +14,9 @@ public class Task {
     // 【新增】任务标签，例如："学习", "生活", "兼职"
     private String tag;
 
-    // 必须保留的无参构造方法，Hibernate 框架通过它来自动创建对象
+    // --- 必须有这个：无参数构造方法（数据库需要） ---
+    public Task() {
+    }
 
     // 包含所有字段的构造方法（方便手动创建对象）
     public Task(String title, boolean completed, String priority, String tag) {
@@ -27,10 +24,6 @@ public class Task {
         this.completed = completed;
         this.priority = priority;
         this.tag = tag;
-    }
-
-    // --- 必须有这个：无参数构造方法（数据库需要） ---
-    public Task() {
     }
 
     // --- 下面是 Getter 和 Setter 方法（必须有，否则报错） ---
@@ -67,4 +60,14 @@ public class Task {
     public String getTag() { return tag; }
     // 【新增】设置标签
     public void setTag(String tag) { this.tag = tag; }
+
+    // 手动添加这个方法，Controller 才能调用它
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    // 建议顺便把获取的方法也加上，以后肯定会用到
+    public Long getUserId() {
+        return userId;
+    }
 }
