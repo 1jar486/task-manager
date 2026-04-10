@@ -3,54 +3,46 @@ package com.zhh.taskmanager.service;
 import com.zhh.taskmanager.model.User;
 import com.zhh.taskmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-/**
- * 这是一个类 (Class)
- * 它使用 implements 关键字来“执行”上面的 UserService 接口
- */
-@Service // 【IoC 注解】：告诉 Spring 框架，“我是一个业务逻辑组件，请把我管理起来”
-public class UserServiceImpl implements UserService{
+@Service
+public class UserServiceImpl implements UserService {
 
-    @Autowired // 【IoC 注解】：自动从 Spring 容器里找一个 UserRepository 的实现对象“塞”进来
+    @Autowired
     private UserRepository userRepository;
 
-    @Override // 这里的注解表示正在重写接口中的 login 方法
-    public String login(String username, String password) {
-        // 1. 去数据库查这个名字的用户
-        User user = userRepository.findByUsername(username);
+    @Autowired
+    private PasswordEncoder passwordEncoder; // 注入我们在 SecurityConfig 中配置的加密器
 
-        // 2. 逻辑判断
-        if (user != null && user.getPassword().equals(password)) {
-            // 登录成功，返回一个标识（实际项目中这里通常返回 JWT Token）
-            return "SUCCESS_TOKEN_FOR_" + user.getId();
+    @Override
+    public boolean register(User user) {
+        // 1. 检查用户名是否已存在
+        if (userRepository.findByUsername(user.getUsername()) != null) {
+            return false; // 用户名已存在，注册失败
         }
 
-        // 3. 失败返回提示
-        return "登录失败:用户名或密码错误";
+        // 2. 将明文密码加密为 BCrypt 密文
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword); // 替换为密文
+
+        // 3. 存入数据库
+        userRepository.insert(user);
+        return true;
     }
 
     @Override
-    public String register(String username, String password){
-        // 1. 先查重
-        User existUser = userRepository.findByUsername(username);
-        if (existUser != null){
-            return "注册失败：该用户名已被占用";
+    public User login(String username, String rawPassword) {
+        // 1. 根据用户名从数据库查出该用户
+        User user = userRepository.findByUsername(username);
+
+        // 2. 如果用户存在，验证密码
+        if (user != null) {
+            // 使用 matches 方法：将前端传来的明文(rawPassword)与数据库里的密文(user.getPassword())进行比对
+            if (passwordEncoder.matches(rawPassword, user.getPassword())) {
+                return user; // 密码正确，返回用户信息
+            }
         }
-
-        // 2. 创建对象
-        User newUser = new User();
-        newUser.setUsername(username);
-        newUser.setPassword(password);
-
-        // 3. 【关键】调用 MyBatis 定义的 save 方法写入数据库
-        int result = userRepository.save(newUser);
-
-        if(result > 0) {
-            return "注册成功";
-        } else {
-            return "注册失败：数据库写入异常";
-        }
+        return null; // 用户名不存在或密码错误
     }
-
 }

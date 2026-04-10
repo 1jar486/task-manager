@@ -26,22 +26,28 @@ const handleLogin = async () => {
     return;
   }
   try {
-    // 【关键修改】直接传对象，不要用 URLSearchParams
-    // 这会匹配后端的 @RequestBody
-    const token = await request.post('/auth/login', {
+    // 1. 发起登录请求，res 接收到的是后端返回的 JSON 对象 {"token": "SUCCESS..."}
+    const res = await request.post('/auth/login', {
       username: form.value.username,
       password: form.value.password
     });
 
-    if (token && token.includes("SUCCESS_TOKEN_FOR_")) {
-      localStorage.setItem('token', token);
+    // 2. 正规做法：先检查 res 是否存在，再从 res.token 中取值
+    // 因为后端现在返回的是 Map，数据在 .token 字段里
+    if (res && res.token && res.token.includes("SUCCESS_TOKEN_FOR_")) {
+      // 3. 把真正的字符串存入本地缓存
+      localStorage.setItem('token', res.token);
+
+      // 4. 跳转到任务看板
+      alert("登录成功！");
       router.push('/tasks');
     } else {
-      alert(token || "登录失败");
+      // 如果后端返回了错误信息，通常在 res 中或者直接弹出
+      alert(res || "用户名或密码错误");
     }
   } catch (error) {
-    console.error(error);
-    alert("网络请求失败");
+    console.error("登录报错详情:", error);
+    alert("登录失败：请检查用户名密码或后端服务");
   }
 };
 
