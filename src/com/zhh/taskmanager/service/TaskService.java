@@ -1,6 +1,5 @@
-package com.zhh.taskmanager.service;
-import com.zhh.taskmanager.model.Task;
-
+package com.zhh.taskmanager.service; // 在service软件包下
+import com.zhh.taskmanager.model.Task; // 引用model包下的Task类
 import java.util.List;
 
 public interface TaskService {
